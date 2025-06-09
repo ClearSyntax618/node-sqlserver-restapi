@@ -13,7 +13,7 @@ router.get('/clientes', getClients);
 router.get('/cliente/:id', getClient);
 router.post('/new-cliente', createClient);
 router.delete('/delete-cliente/:id', deleteClient);
-router.put('/update-cliente', updateClient);
+router.put('/update-cliente/:id', updateClient);
 
 
 export default router;
