@@ -129,3 +129,29 @@ export const getClient = async (req, res) => {
     }
 };
 
+export const getProductsByClient = async (req, res) => {
+    const id = req.params['id'];
+
+    try {
+        const pool = await getConnection();
+        const result = await pool.request().query(`SELECT p.nombre, p.descripcion, p.stock, p.precio
+            FROM Producto p
+            JOIN esComprado c ON p.codP = c.codP
+            JOIN Cliente cl ON cl.codC = c.codC
+            WHERE cl.codC = ${id};`
+        );
+
+        if(!result.recordset[0]) {
+            return res.status(404).json({
+                message: 'Product not found',
+            });
+        }
+
+        res.status(200).json(result.recordset);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal Server Error'
+        })
+    }
+}
